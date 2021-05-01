@@ -1,6 +1,8 @@
 import app from 'firebase/app'
+import * as firebaseui from 'firebaseui'
 import 'firebase/auth'
 import 'firebase/firestore'
+
 
 import firebaseConfig from './config'
 
@@ -11,6 +13,7 @@ class Firebase {
     this.auth = app.auth()
     this.db = app.firestore()
 
+
     // if (window.location.hostname === 'localhost') {
     //   this.db.useEmulator('localhost', 8080);
     //   this.auth.useEmulator('http://localhost:9099/', { disableWarnings: true });
@@ -18,7 +21,8 @@ class Firebase {
 
     this.googleProvider = new app.auth.GoogleAuthProvider()
     this.facebookProvider = new app.auth.FacebookAuthProvider()
-  }
+
+}
 
   login = async (provider) => {
     await this.auth.signInWithPopup(this[`${provider}Provider`])

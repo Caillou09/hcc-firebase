@@ -6,6 +6,7 @@ import {FirebaseContext} from '../firebase'
 
 
 import useForm from '../hooks/useForm'
+import useFetchUserData from '../hooks/useFetchUserData'
 
 
 const FormInfo = () => {
@@ -18,6 +19,7 @@ const FormInfo = () => {
     frequence: ""
   })
 
+//Style CSS des inputs
   const readOnlySyle = {
     background : '#898c8a',
     outline : 'none'
@@ -26,25 +28,6 @@ const FormInfo = () => {
   const inputStyle = {
 
   }
-
-  useEffect( () => {
-    let userInfo = firebase.db.collection('users').doc(`${user.uid}`)
-    userInfo.get()
-    .then( (userData) => {
-      setStatus('isfetching')
-      if (userData.data().age) {
-        setInitialValues({
-          age : userData.data().age,
-          poids : userData.data().poids,
-          frequence : userData.data().frequence
-        })
-        setStatus('fetched')
-        setReadOnly(true)
-      }
-    })
-
-  }, [])
-
 
 
   const handleClick = () => {
@@ -61,7 +44,20 @@ const FormInfo = () => {
   }
 
   const {inputs, handleInput, handleSubmit} = useForm(initialValues, sendInfo);
-  console.log(inputs);
+  const {data} = useFetchUserData(user.uid)
+
+  useEffect( () => {
+    if (data.age) {
+      setInitialValues(data)
+      setReadOnly(true)
+    }
+  }, [data]);
+
+
+
+
+
+  console.log(data);
 
   return (
     <div className="App-header">
@@ -99,7 +95,7 @@ const FormInfo = () => {
         </div>
       </form>
       <div>
-        {!readOnly ? <button onClick={handleSubmit}>Enregistrer</button> : <button onClick={handleClick}>Modifier</button>}
+        {!readOnly ? <button style={{cursor : 'pointer'}} onClick={handleSubmit}>Enregistrer</button> : <button style={{cursor : 'pointer'}} onClick={handleClick}>Modifier</button>}
 
 
       </div>

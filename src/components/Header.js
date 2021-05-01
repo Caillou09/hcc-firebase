@@ -4,7 +4,6 @@ import { FirebaseContext } from '../firebase'
 
 const Header = () => {
   const { user, firebase } = useContext(FirebaseContext)
-  console.log(user)
 
   const buttonStyle = {
     padding : '5px',
@@ -25,6 +24,7 @@ const Header = () => {
 
 
     )}
+    <div id="firebaseui-auth-container"></div>
     </div>
   )
 }
