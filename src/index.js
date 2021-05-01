@@ -3,10 +3,35 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import FormInfo from './components/FormInfo';
+import BoutonInfos from './components/BoutonInfos';
+
+import firebase, { FirebaseContext } from './firebase'
+import useAuth from './hooks/useAuth'
+
+import {BrowserRouter, Switch, Route} from 'react-router-dom'
+
+function Root() {
+  const user = useAuth()
+  return (
+    <BrowserRouter>
+      <FirebaseContext.Provider value={{user, firebase}}>
+        <BoutonInfos></BoutonInfos>
+        <Switch>
+          <Route exact path="/" component={App}/>
+          <Route path="/informations" component={FormInfo}/>
+        </Switch>
+
+      </FirebaseContext.Provider>
+    </BrowserRouter>
+  )
+}
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+
+    <Root/>
+
   </React.StrictMode>,
   document.getElementById('root')
 );
